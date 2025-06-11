@@ -1,19 +1,36 @@
+import GitHubIcon from "@/assets/svg/GitHub";
+import LinkedInIcon from "@/assets/svg/LinkedIn";
+import MailIcon from "@/assets/svg/Mail";
+import PhoneIcon from "@/assets/svg/Phone";
 import Mail from "@/components/mail";
 import Spacer from "@/components/Spacer";
+import { fontFamily } from "@/constants/fonts";
 import { useThemeColors } from "@/constants/theme";
-import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import {
   KeyboardAvoidingView,
+  Linking,
   Platform,
+  Pressable,
+  ScrollView,
   StyleSheet,
   Text,
+  useWindowDimensions,
   View,
-  ScrollView,
 } from "react-native";
 
 export default function About() {
   const colors = useThemeColors();
+  const { width } = useWindowDimensions();
+  const isWeb = width >= 1024;
+  const isTablet = width >= 768;
+
+  const alignmentStyle: { alignItems: "center" | "flex-start" } = {
+    alignItems: isTablet || isWeb ? "center" : "flex-start",
+  };
+
+  const iconSize = isTablet || isWeb ? 34 : 24;
+  const fontSize = isTablet || isWeb ? 22 : 18;
 
   return (
     <KeyboardAvoidingView
@@ -22,26 +39,92 @@ export default function About() {
       keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
     >
       <ScrollView
-        contentContainerStyle={styles.container}
+        contentContainerStyle={[styles.container, alignmentStyle]}
         keyboardShouldPersistTaps="handled"
       >
-        <Spacer flex={2} />
-        <Text style={[styles.text, { color: colors.text }]}>about</Text>
-        <Spacer />
-
-        {[
-          { icon: "call", label: "Phone" },
-          { icon: "logo-linkedin", label: "LinkedIn" },
-          { icon: "logo-github", label: "Github" },
-        ].map((item, i) => (
-          <View key={i} style={styles.linkContainer}>
-            <Ionicons name={item.icon as any} size={35} color={colors.text} />
-            <Text style={[styles.linkText, { color: colors.text }]}>
-              {item.label}
-            </Text>
+        <Spacer flex={1} />
+        <View style={styles.linkContainer}>
+          <View>
+            <Pressable
+              style={styles.pressableContainer}
+              onPress={() => Linking.openURL("https://github.com/HDemir23")}
+            >
+              <GitHubIcon size={iconSize} />
+              <Text
+                style={[
+                  styles.linkText,
+                  {
+                    fontSize: fontSize,
+                    fontFamily: fontFamily.meduim,
+                    color: colors.text,
+                  },
+                ]}
+              >
+                HDemir23
+              </Text>
+            </Pressable>
           </View>
-        ))}
+          <View>
+            <Pressable
+              style={styles.pressableContainer}
+              onPress={() => Linking.openURL("tel:+905322955329")}
+            >
+              <PhoneIcon size={iconSize} />
+              <Text
+                style={[
+                  styles.linkText,
+                  {
+                    fontSize: fontSize,
+                    fontFamily: fontFamily.meduim,
+                    color: colors.text,
+                  },
+                ]}
+              >
+                +90 507 586 56 81
+              </Text>
+            </Pressable>
+          </View>
 
+          <View>
+            <Pressable
+              style={styles.pressableContainer}
+              onPress={() =>
+                Linking.openURL("https://www.linkedin.com/in/realhdemir/")
+              }
+            >
+              <LinkedInIcon size={iconSize} />
+              <Text
+                style={[
+                  styles.linkText,
+                  {
+                    fontSize: fontSize,
+                    fontFamily: fontFamily.meduim,
+                    color: colors.text,
+                  },
+                ]}
+              >
+                Ahmet Hakan Demir
+              </Text>
+            </Pressable>
+          </View>
+          <View>
+            <Pressable style={styles.pressableContainer}>
+              <MailIcon size={iconSize} />
+              <Text
+                style={[
+                  styles.linkText,
+                  {
+                    fontSize: fontSize,
+                    fontFamily: fontFamily.meduim,
+                    color: colors.text,
+                  },
+                ]}
+              >
+                a.hakandemir23@gmail.com
+              </Text>
+            </Pressable>
+          </View>
+        </View>
         <Spacer />
 
         <View style={styles.mailContainer}>
@@ -57,7 +140,6 @@ export default function About() {
     </KeyboardAvoidingView>
   );
 }
-
 const styles = StyleSheet.create({
   flexContainer: {
     flex: 1,
@@ -69,9 +151,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   linkContainer: {
+    flexDirection: "column",
+  },
+  pressableContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginVertical: 6,
+    paddingVertical: 9,
   },
   mailContainer: {
     flexDirection: "row",
@@ -84,7 +170,6 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   text: {
-    fontSize: 22,
     fontWeight: "bold",
     alignSelf: "center",
   },
