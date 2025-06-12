@@ -22,15 +22,10 @@ import {
 export default function About() {
   const colors = useThemeColors();
   const { width } = useWindowDimensions();
-  const isWeb = width >= 1024;
-  const isTablet = width >= 768;
+  const isTabletOrWeb = width >= 768;
 
-  const alignmentStyle: { alignItems: "center" | "flex-start" } = {
-    alignItems: isTablet || isWeb ? "center" : "flex-start",
-  };
-
-  const iconSize = isTablet || isWeb ? 34 : 24;
-  const fontSize = isTablet || isWeb ? 22 : 18;
+  const iconSize = isTabletOrWeb ? 34 : 24;
+  const fontSize = isTabletOrWeb ? 22 : 18;
 
   return (
     <KeyboardAvoidingView
@@ -39,60 +34,46 @@ export default function About() {
       keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
     >
       <ScrollView
-        contentContainerStyle={[styles.container, alignmentStyle]}
+        contentContainerStyle={[
+          styles.container,
+          {
+            alignItems: isTabletOrWeb ? "center" : "flex-start",
+            paddingHorizontal: isTabletOrWeb ? 64 : 24,
+          },
+        ]}
         keyboardShouldPersistTaps="handled"
       >
         <Spacer flex={1} />
-        <View style={styles.linkContainer}>
-          <View>
-            <Pressable
-              style={styles.pressableContainer}
-              onPress={() => Linking.openURL("https://github.com/HDemir23")}
-            >
-              <GitHubIcon size={iconSize} />
-              <Text
-                style={[
-                  styles.linkText,
-                  {
-                    fontSize: fontSize,
-                    fontFamily: fontFamily.meduim,
-                    color: colors.text,
-                  },
-                ]}
-              >
-                HDemir23
-              </Text>
-            </Pressable>
-          </View>
-          <View>
-            <Pressable
-              style={styles.pressableContainer}
-              onPress={() => Linking.openURL("tel:+905322955329")}
-            >
-              <PhoneIcon size={iconSize} />
-              <Text
-                style={[
-                  styles.linkText,
-                  {
-                    fontSize: fontSize,
-                    fontFamily: fontFamily.meduim,
-                    color: colors.text,
-                  },
-                ]}
-              >
-                +90 507 586 56 81
-              </Text>
-            </Pressable>
-          </View>
 
-          <View>
+        <View style={styles.linkGroup}>
+          {[
+            {
+              icon: <GitHubIcon size={iconSize} color={colors.text} />,
+              text: "HDemir23",
+              onPress: () => Linking.openURL("https://github.com/HDemir23"),
+            },
+            {
+              icon: <PhoneIcon size={iconSize}  color={colors.text}  />,
+              text: "+90 507 586 56 81",
+              onPress: () => Linking.openURL("tel:+905075865681"),
+            },
+            {
+              icon: <LinkedInIcon size={iconSize}  color={colors.text} />,
+              text: "Ahmet Hakan Demir",
+              onPress: () => Linking.openURL("https://www.linkedin.com/in/realhdemir/"),
+            },
+            {
+              icon: <MailIcon size={iconSize}  color={colors.text} />,
+              text: "a.hakandemir23@gmail.com",
+              onPress: () => {},
+            },
+          ].map((item, i) => (
             <Pressable
+              key={i}
               style={styles.pressableContainer}
-              onPress={() =>
-                Linking.openURL("https://www.linkedin.com/in/realhdemir/")
-              }
+              onPress={item.onPress}
             >
-              <LinkedInIcon size={iconSize} />
+              {item.icon}
               <Text
                 style={[
                   styles.linkText,
@@ -103,36 +84,16 @@ export default function About() {
                   },
                 ]}
               >
-                Ahmet Hakan Demir
+                {item.text}
               </Text>
             </Pressable>
-          </View>
-          <View>
-            <Pressable style={styles.pressableContainer}>
-              <MailIcon size={iconSize} />
-              <Text
-                style={[
-                  styles.linkText,
-                  {
-                    fontSize: fontSize,
-                    fontFamily: fontFamily.meduim,
-                    color: colors.text,
-                  },
-                ]}
-              >
-                a.hakandemir23@gmail.com
-              </Text>
-            </Pressable>
-          </View>
+          ))}
         </View>
+
         <Spacer />
 
         <View style={styles.mailContainer}>
-          <Mail
-            onSend={(message) => {
-              console.log("Mesaj gönderildi:", message);
-            }}
-          />
+          <Mail />
         </View>
 
         <Spacer flex={2} />
@@ -140,6 +101,7 @@ export default function About() {
     </KeyboardAvoidingView>
   );
 }
+
 const styles = StyleSheet.create({
   flexContainer: {
     flex: 1,
@@ -147,30 +109,25 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     justifyContent: "center",
-    alignItems: "flex-start",
-    paddingHorizontal: 24,
   },
-  linkContainer: {
+  linkGroup: {
+    width: "100%",
+    maxWidth: 640,
     flexDirection: "column",
+    gap: 12,
   },
   pressableContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 6,
-    paddingVertical: 9,
+    paddingVertical: 10,
   },
   mailContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 6,
+    marginTop: 24,
+    width: "100%",
+    maxWidth: 640,
   },
   linkText: {
-    fontSize: 20,
     fontWeight: "500",
     marginLeft: 12,
-  },
-  text: {
-    fontWeight: "bold",
-    alignSelf: "center",
   },
 });
