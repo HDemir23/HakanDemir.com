@@ -50,7 +50,7 @@ export default function Home() {
               hands-on work and real feedback.
             </Text>
           </View>
-          <Text style={{ color: colors.text, fontFamily: fontFamily.meduim }}>
+          <Text style={{ color: colors.text, fontFamily: fontFamily.medium }}>
             Footer
           </Text>
           <Spacer flex={2} />

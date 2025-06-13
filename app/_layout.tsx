@@ -8,7 +8,7 @@ export default function RootLayout() {
   const colors = useThemeColors();
   const [fonts] = useFonts({
     [fontFamily.bold]: require("../assets/fonts/WorkSans-Bold.ttf"),
-    [fontFamily.meduim]: require("../assets/fonts/WorkSans-Medium.ttf"),
+    [fontFamily.medium]: require("../assets/fonts/WorkSans-Medium.ttf"),
     [fontFamily.regular]: require("../assets/fonts/WorkSans-Regular.ttf"),
   });
 

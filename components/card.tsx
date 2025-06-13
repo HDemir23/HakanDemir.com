@@ -1,8 +1,8 @@
+// Final FIXED Card component for mobile iOS display issues
 import { fontFamily } from "@/constants/fonts";
 import { useThemeColors } from "@/constants/theme";
 import React from "react";
 import {
-  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -13,17 +13,26 @@ import {
 type Props = {
   title: string;
   skills: { name: string; icon: React.ReactNode }[];
-  route?: any;
   icon: React.ReactNode;
   size?: number;
   fontsize?: number;
+  onLayout?: (e: any) => void;
+  fixedHeight?: number;
 };
 
-export function Card({ icon, title, skills, size ,fontsize, route}: Props) {
+export function Card({
+  icon,
+  title,
+  skills,
+  size = 20,
+  fontsize = 16,
+  onLayout,
+  fixedHeight,
+}: Props) {
   const colors = useThemeColors();
   const { width } = useWindowDimensions();
 
-  const isTablet = width >= 768;
+  const isTablet = width >= 768 && width < 1024;
   const isWeb = width >= 1024;
 
   const dynamicCardStyle = isWeb
@@ -33,75 +42,94 @@ export function Card({ icon, title, skills, size ,fontsize, route}: Props) {
     : styles.cardMobile;
 
   return (
-    <Pressable
-      style={({ hovered }) => [
-        styles.cardWrapper,
-        dynamicCardStyle,
-        hovered && isWeb && styles.webCardHover,
-      ]}
-    >
-      <View style={[styles.card, { backgroundColor: colors.primary } ]}>
-        <View style={styles.header}>
-          {icon && <View style={styles.icon}>{icon}</View>}
-          <Text style={[styles.title, { color: colors.text , fontSize: size || 22 , fontFamily: fontFamily.bold }]}>{title}</Text>
+    <View style={[styles.container, isWeb && styles.webWrap]}>
+      <Pressable style={styles.cardWrapper}>
+        <View
+          style={[
+            styles.card,
+            dynamicCardStyle,
+            { backgroundColor: colors.primary },
+            (isWeb || isTablet) && fixedHeight ? { height: fixedHeight } : null,
+          ]}
+          onLayout={onLayout}
+        >
+          <View style={styles.header}>
+            {icon && <View style={styles.icon}>{icon}</View>}
+            <Text
+              style={[
+                styles.title,
+                {
+                  color: colors.text,
+                  fontSize: size,
+                  fontFamily: fontFamily.bold,
+                },
+              ]}
+            >
+              {title}
+            </Text>
+          </View>
+          <View style={styles.divider} />
+          <View style={styles.skillsWrapper}>
+            {skills.map((skill, idx) => (
+              <View key={idx} style={styles.skillItem}>
+                <View style={styles.skillIcon}>{skill.icon}</View>
+                <Text
+                  style={[
+                    styles.skillText,
+                    {
+                      fontSize: fontsize,
+                      color: colors.text,
+                      fontFamily: fontFamily.medium,
+                    },
+                  ]}
+                >
+                  {skill.name}
+                </Text>
+              </View>
+            ))}
+          </View>
         </View>
-        <View style={styles.divider} />
-        <View style={[styles.skills, isTablet && styles.skillsTablet]}>
-          {skills.map((skill, idx) => (
-            <View key={idx} style={styles.skillItem}>
-              {skill.icon && <View style={styles.skillIcon}>{skill.icon}</View>}
-              <Text style={[styles.skillText, { color: colors.text , fontSize: fontsize || 22 , fontFamily: fontFamily.meduim }]}>
-                {skill.name}
-              </Text>
-            </View>
-          ))}
-        </View>
-      </View>
-    </Pressable>
+      </Pressable>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    justifyContent: "center",
+    flexWrap: "nowrap",
+    gap: 12,
+  },
+  webWrap: {
+    flexWrap: "wrap",
+    justifyContent: "center",
+  },
   cardWrapper: {
-    marginVertical: 8,
+    marginVertical: 10,
+    paddingHorizontal: 8,
+    width: "100%",
+  },
+  card: {
     borderRadius: 20,
-    overflow: Platform.OS === "web" ? "visible" : "hidden",
+    padding: 20,
+    elevation: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 4,
-    transitionDuration: Platform.OS === "web" ? "150ms" : undefined,
   },
   cardMobile: {
     width: "100%",
-    minWidth: "100%",
-    alignSelf: "center",
   },
   cardTablet: {
-    flexGrow: 1,
-    flexBasis: "48%",
-    maxWidth: "48%",
-    minWidth: 280,
-    height: 260,
+    width: "48%",
+    minWidth: 300,
   },
   cardWeb: {
-    flexGrow: 1,
-    flexBasis: "30%",
-    maxWidth: "30%",
-    minWidth: 280,
-    height: 260,
-  },
-  webCardHover: {
-    transform: [{ scale: 1.02 }],
-    shadowOpacity: 0.2,
-    elevation: 8,
-  },
-  card: {
-    flex: 1,
-    padding: 24,
-    borderRadius: 20,
-    justifyContent: "space-between",
+    width: "31.5%",
+    minWidth: 320,
+    maxWidth: 360,
   },
   header: {
     flexDirection: "row",
@@ -112,29 +140,21 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   title: {
-    fontSize: 22,
     fontWeight: "700",
-    includeFontPadding: false, // Android specific
-    textAlignVertical: "center",
   },
   divider: {
     height: 1,
     backgroundColor: "rgba(255, 255, 255, 0.2)",
-    marginVertical: 16,
+    marginBottom: 16,
   },
-  skills: {
+  skillsWrapper: {
+    flexDirection: "column",
     gap: 12,
-  },
-  skillsTablet: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
   },
   skillItem: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 12,
-    flexBasis: "48%",
+    marginBottom: 8,
   },
   skillIcon: {
     marginRight: 10,

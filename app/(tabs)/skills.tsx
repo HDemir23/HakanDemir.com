@@ -1,6 +1,7 @@
+// Final FIXED Skills component with responsive layout
 import { Card } from "@/components/card";
 import { useThemeColors } from "@/constants/theme";
-import React from "react";
+import React, { useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -8,7 +9,6 @@ import {
   useWindowDimensions,
 } from "react-native";
 
-// Svg Components (add these if available)
 import BackendIcon from "@/assets/svg/Backend";
 import CssIcon from "@/assets/svg/Css";
 import DevTools from "@/assets/svg/DevTools";
@@ -32,77 +32,91 @@ import VsCodeIcon from "@/assets/svg/VsCode";
 export default function Skills() {
   const colors = useThemeColors();
   const { width } = useWindowDimensions();
-  const isWide = width >= 768;
-  const isWebWide = width >= 1024;
+  const isTablet = width >= 768;
+  const isWeb = width >= 1024;
+  const [maxHeight, setMaxHeight] = useState(0);
+
+  const handleLayout = (event: any) => {
+    const { height } = event.nativeEvent.layout;
+    setMaxHeight((prev) => Math.max(prev, height));
+  };
 
   return (
     <View style={[styles.wrapper, { backgroundColor: colors.background }]}>
-      <ScrollView contentContainerStyle={{ padding: 16 }}>
-        <View style={styles.container}>
-          <View
-            style={[
-              styles.grid,
-              isWide && styles.gridWide,
-              isWebWide && styles.gridWebWide,
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View
+          style={[
+            styles.grid,
+            isTablet && styles.gridTablet,
+            isWeb && styles.gridWeb,
+          ]}
+        >
+          <Card
+            title="Languages"
+            icon={<LanguageIcon size={24} />}
+            size={20}
+            fontsize={16}
+            skills={[
+              { name: "TypeScript", icon: <TypeScriptIcon size={20} /> },
+              { name: "JavaScript", icon: <JavaScriptIcon size={20} /> },
+              { name: "Swift", icon: <SwiftIcon size={20} /> },
             ]}
-          >
-            <Card
-              title="Languages"
-              icon={<LanguageIcon size={34} />}
-              size={32}
-              fontsize={24}
-              skills={[
-                { name: "TypeScript", icon: <TypeScriptIcon size={34} /> },
-                { name: "JavaScript", icon: <JavaScriptIcon size={34} /> },
-                { name: "Swift", icon: <SwiftIcon size={34} /> },
-              ]}
-            />
-            <Card
-              title="Frontend"
-              icon={<Frontend size={34} />}
-              size={32}
-              fontsize={24}
-              skills={[
-                { name: "React", icon: <ReactIcon size={34} /> },
-                { name: "HTML", icon: <HtmlIcon size={34} /> },
-                { name: "CSS", icon: <CssIcon size={34} /> },
-                { name: "SCSS", icon: <ScssIcon size={34} /> },
-              ]}
-            />
-            <Card
-              title="Mobile"
-              icon={<PhoneIcon size={34} />}
-              size={32}
-              fontsize={24}
-              skills={[
-                { name: "React Native", icon: <ReactIcon size={34} /> },
-                { name: "SwiftUI", icon: <SwiftIcon size={34} /> },
-                { name: "Expo", icon: <ExpoIcon size={34} /> },
-              ]}
-            />
-            <Card
-              title="Backend"
-              icon={<BackendIcon size={34} />}
-              size={32}
-              fontsize={24}
-              skills={[
-                { name: "Node.js", icon: <NodeJsIcon size={34} /> },
-                { name: "MongoDB", icon: <MongoDBIcon size={34} /> },
-              ]}
-            />
-            <Card
-              title="Dev Tools"
-              icon={<DevTools size={34} />}
-              size={32}
-              fontsize={24}
-              skills={[
-                { name: "Git", icon: <GitIcon size={34} /> },
-                { name: "GitHub", icon: <GitHubIcon size={34} /> },
-                { name: "VS Code", icon: <VsCodeIcon size={34} /> },
-                { name: "Postman", icon: <PostmanIcon size={34} /> },
-              ]}
-            />
-          </View>
+            onLayout={handleLayout}
+            fixedHeight={maxHeight}
+          />
+          <Card
+            title="Frontend"
+            icon={<Frontend size={24} />}
+            size={20}
+            fontsize={16}
+            skills={[
+              { name: "React", icon: <ReactIcon size={20} /> },
+              { name: "HTML", icon: <HtmlIcon size={20} /> },
+              { name: "CSS", icon: <CssIcon size={20} /> },
+              { name: "SCSS", icon: <ScssIcon size={20} /> },
+            ]}
+            onLayout={handleLayout}
+            fixedHeight={maxHeight}
+          />
+          <Card
+            title="Mobile"
+            icon={<PhoneIcon size={24} />}
+            size={20}
+            fontsize={16}
+            skills={[
+              { name: "React Native", icon: <ReactIcon size={20} /> },
+              { name: "SwiftUI", icon: <SwiftIcon size={20} /> },
+              { name: "Expo", icon: <ExpoIcon size={20} /> },
+            ]}
+            onLayout={handleLayout}
+            fixedHeight={maxHeight}
+          />
+          <Card
+            title="Backend"
+            icon={<BackendIcon size={24} />}
+            size={20}
+            fontsize={16}
+            skills={[
+              { name: "Node.js", icon: <NodeJsIcon size={20} /> },
+              { name: "MongoDB", icon: <MongoDBIcon size={20} /> },
+            ]}
+            onLayout={handleLayout}
+            fixedHeight={maxHeight}
+          />
+          <Card
+            title="Dev Tools"
+            icon={<DevTools size={24} />}
+            size={20}
+            fontsize={16}
+            skills={[
+              { name: "Git", icon: <GitIcon size={20} /> },
+              { name: "GitHub", icon: <GitHubIcon size={20} /> },
+              { name: "VS Code", icon: <VsCodeIcon size={20} /> },
+              { name: "Postman", icon: <PostmanIcon size={20} /> },
+            ]}
+            onLayout={handleLayout}
+            fixedHeight={maxHeight}
+          />
         </View>
       </ScrollView>
     </View>
@@ -113,19 +127,24 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
   },
-  container: {
-    flex: 1,
+  scrollContainer: {
+    padding: 16,
   },
   grid: {
-    flexDirection: "column",
     gap: 16,
   },
-  gridWide: {
+  gridTablet: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+    rowGap: 16,
+    columnGap: 16,
+  },
+  gridWeb: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-  },
-  gridWebWide: {
-    justifyContent: "space-evenly",
+    rowGap: 16,
+    columnGap: 16,
   },
 });
