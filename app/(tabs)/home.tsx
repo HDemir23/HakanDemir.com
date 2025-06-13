@@ -1,11 +1,55 @@
 import Spacer from "@/components/Spacer";
 import { fontFamily } from "@/constants/fonts";
 import { useThemeColors } from "@/constants/theme";
+import * as FileSystem from "expo-file-system";
+import * as MediaLibrary from "expo-media-library";
+import { router } from "expo-router";
 import React from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 export default function Home() {
   const colors = useThemeColors();
+
+const downloadCv = async () => {
+  try {
+    const { status } = await MediaLibrary.requestPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert("Request Needed For download file");
+      return;
+    }
+
+    const fileId = "14RMAwxM1WGIhYowoGQiGucLMH3E9egr0";
+    const fileName = "belge.docx";
+    const downloadUri = `https://docs.google.com/document/d/${fileId}/export?format=docx`;
+    const localPath = FileSystem.documentDirectory + fileName;
+
+    const downloadResumable = FileSystem.createDownloadResumable(
+      downloadUri,
+      localPath
+    );
+
+    const result = await downloadResumable.downloadAsync();
+
+    if (result?.uri) {
+      await MediaLibrary.saveToLibraryAsync(result.uri);
+      Alert.alert("Başarılı", ".docx dosyası indirildi ve kaydedildi.");
+    } else {
+      Alert.alert("Hata", "Dosya indirilemedi.");
+    }
+  } catch (error) {
+    console.log(error);
+    Alert.alert("Error", "Something Went Wrong While downloading");
+  }
+};
+
   return (
     <View style={[styles.wrapper, { backgroundColor: colors.background }]}>
       <ScrollView>
@@ -23,10 +67,15 @@ export default function Home() {
                 { color: colors.text, fontFamily: fontFamily.bold },
               ]}
             >
-              Yahoooooo{" "}
+              Ahmet Hakan Demir
             </Text>
           </View>
           <Spacer flex={2} />
+
+          <Pressable onPress={() => router.push("https://leetcode.com/contest/weekly-contest-454/")}>
+            <Text style={[{ color: colors.text }]}>asdasd</Text>
+          </Pressable>
+
           <View style={styles.textContainer}>
             <Text style={[styles.paragraph, { color: colors.text }]}>
               ◉ Building real, working software is where I focus not just
@@ -60,7 +109,6 @@ export default function Home() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
