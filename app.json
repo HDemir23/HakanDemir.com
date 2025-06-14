@@ -4,7 +4,7 @@
     "slug": "Cv",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/dock.png",
     "scheme": "cv",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,15 +13,14 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/adaptive-icon.png"
       },
       "edgeToEdgeEnabled": true
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/dock.png"
     },
     "plugins": [
       "expo-router",
