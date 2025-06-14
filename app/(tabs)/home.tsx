@@ -1,3 +1,4 @@
+import { PlatformOnlyButton } from "@/components/ActionButton";
 import Spacer from "@/components/Spacer";
 import { fontFamily } from "@/constants/fonts";
 import { useThemeColors } from "@/constants/theme";
@@ -8,6 +9,7 @@ import React from "react";
 import {
   Alert,
   Image,
+  Linking,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -133,6 +135,20 @@ export default function Home() {
             </Text>
           </View>
           <Spacer flex={2} />
+          <View style={styles.buttonFlex}>
+            <PlatformOnlyButton
+              label="Download For Android"
+              onPress={() => Linking.openURL("/downloads/app.apk")}
+            />
+            <PlatformOnlyButton
+              label="Download For iOS"
+              onPress={() =>
+                Linking.openURL(
+                  "https://expo.dev/artifacts/eas/goswPVyPxpXfWmQx7FaUvq.aab"
+                )
+              }
+            />
+          </View>
           <Spacer flex={2} />
         </View>
       </ScrollView>
@@ -156,6 +172,13 @@ const styles = StyleSheet.create({
     height: 250,
     borderRadius: 10,
     marginBottom: 10,
+  },
+  buttonFlex:{
+    justifyContent: "center",
+    alignItems: "center",
+    width: "90%",
+    paddingHorizontal: 20,
+    margin: 20,
   },
   image: {
     alignItems: "flex-start",
