@@ -1,17 +1,15 @@
 import { useThemeColors } from "@/constants/theme";
 import React, { useState } from "react";
 import {
-  Alert,
   Button,
   StyleSheet,
   TextInput,
   View,
   ActivityIndicator,
   useWindowDimensions,
-  Platform,
 } from "react-native";
 
-type MailProps = {};
+import { showMessage } from "@/utils/showMessage";
 
 export default function Mail() {
   const colors = useThemeColors();
@@ -24,12 +22,12 @@ export default function Mail() {
 
   const handleSend = async () => {
     if (senderMail.trim() === "" || message.trim() === "") {
-      Alert.alert("Uyarı", "Lütfen tüm alanları doldurun.");
+      showMessage("Warning", "Please fill in all fields.");
       return;
     }
 
     if (!/\S+@\S+\.\S+/.test(senderMail)) {
-      Alert.alert("Lütfen geçerli bir e-posta adresi girin");
+      showMessage("Invalid Email", "Please enter a valid email address.");
       return;
     }
 
@@ -44,14 +42,14 @@ export default function Mail() {
       const result = await response.json();
 
       if (result.success) {
-        Alert.alert("Başarılı", "Mesaj gönderildi.");
+        showMessage("Success", "Your message has been sent.");
         setSenderMail("");
         setMessage("");
       } else {
-        Alert.alert("Hata", result.error || "Gönderilemedi.");
+        showMessage("Error", result.error || "Failed to send your message.");
       }
     } catch (error) {
-      Alert.alert("Hata", "Sunucuya ulaşılamadı.");
+      showMessage("Error", "Unable to reach the server.");
     } finally {
       setLoading(false);
     }
@@ -93,7 +91,7 @@ export default function Mail() {
         <ActivityIndicator size="large" color={colors.primary} />
       ) : (
         <View style={[styles.button, { backgroundColor: colors.button }]}>
-          <Button title="Gönder" onPress={handleSend} color={colors.primary} />
+          <Button title="Send" onPress={handleSend} color={colors.primary} />
         </View>
       )}
     </View>
