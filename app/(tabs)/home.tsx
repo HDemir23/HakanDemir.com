@@ -2,117 +2,125 @@ import { PlatformOnlyButton } from "@/components/ActionButton";
 import Spacer from "@/components/Spacer";
 import { fontFamily } from "@/constants/fonts";
 import { useThemeColors } from "@/constants/theme";
-import * as FileSystem from "expo-file-system";
-import * as MediaLibrary from "expo-media-library";
 import { router } from "expo-router";
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import {
-  Alert,
   Image,
   Linking,
   Pressable,
   ScrollView,
+  StyleProp,
   StyleSheet,
   Text,
+  TextStyle,
   View,
+  ViewStyle,
 } from "react-native";
 
 export default function Home() {
   const colors = useThemeColors();
   const [isHovered, setIsHovered] = React.useState(false);
 
-  const downloadCv = async () => {
-    try {
-      const { status } = await MediaLibrary.requestPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert("Request Needed For download file");
-        return;
-      }
+  // Callback functions for handling button presses
+  const handlePressCv = useCallback(() => {
+    router.push(
+      "https://docs.google.com/document/d/1ZKeHLH1XcS_kLFjsHAbqszWEeG7JD39OpQYDPyO1his/edit?tab=t.0"
+    );
+  }, []);
 
-      const fileId = "14RMAwxM1WGIhYowoGQiGucLMH3E9egr0";
-      const fileName = "belge.docx";
-      const downloadUri = `https://docs.google.com/document/d/${fileId}/export?format=docx`;
-      const localPath = FileSystem.documentDirectory + fileName;
+  const handleAndroidDownload = useCallback(() => {
+    Linking.openURL(
+      "https://expo.dev/accounts/roseprince/projects/Cv/builds/dace587f-af26-4baf-afe1-425e3db89f3e"
+    );
+  }, []);
 
-      const downloadResumable = FileSystem.createDownloadResumable(
-        downloadUri,
-        localPath
-      );
+  const handleIosDownload = useCallback(() => {
+    Linking.openURL(
+      "https://jetottawa.ca/wp-content/uploads/2021/10/work-progress-loading-bar-concept-hand-drawing-work-progress-loading-bar-concept-marker-transparent-wipe-board-167678984.jpg"
+    );
+  }, []);
 
-      const result = await downloadResumable.downloadAsync();
+  // Hover handlers to change button style on hover
+  const hoverIn = useCallback(() => setIsHovered(true), []);
+  const hoverOut = useCallback(() => setIsHovered(false), []);
 
-      if (result?.uri) {
-        await MediaLibrary.saveToLibraryAsync(result.uri);
-        Alert.alert("Başarılı", ".docx dosyası indirildi ve kaydedildi.");
-      } else {
-        Alert.alert("Hata", "Dosya indirilemedi.");
-      }
-    } catch (error) {
-      console.log(error);
-      Alert.alert("Error", "Something Went Wrong While downloading");
-    }
-  };
+  // Memoized styles to avoid unnecessary recalculations
+  // This helps in performance optimization
+  // and ensures styles are only recalculated when dependencies change
+  // Button style that changes based on hover state
+  // and uses theme colors
+  // Text style that changes based on hover state
+  // and uses theme colors
+  // Memoized button style that changes based on hover state
+  // and uses theme colors
+  // Memoized text style that changes based on hover state
+
+  const CvButtonStyle = useMemo<StyleProp<ViewStyle>>(
+    () => ({
+      ...styles.ButtonContainer,
+      backgroundColor: colors.primary,
+      transform: isHovered ? [{ scale: 1.03 }] : [{ scale: 1 }],
+    }),
+    [isHovered, colors.primary]
+  );
+
+  const buttonTextStyle = useMemo<StyleProp<TextStyle>>(
+    () => ({
+      color: isHovered ? colors.textOposide : colors.text,
+      fontFamily: fontFamily.bold,
+    }),
+    [isHovered, colors.text, colors.textOposide]
+  );
+
+  const baseTextStyle = useMemo(
+    () => ({
+      color: colors.text,
+      fontFamily: fontFamily.medium,
+    }),
+    [colors.text]
+  );
+
+  const bgColor = useMemo(
+    () => ({
+      backgroundColor: colors.background,
+    }),
+    [colors.background]
+  );
+
+  const primaryColor = useMemo(
+    () => ({
+      backgroundColor: colors.primary,
+    }),
+    [colors.primary]
+  );
 
   return (
-    <View style={[styles.wrapper, { backgroundColor: colors.background }]}>
+    <View style={[styles.wrapper, bgColor]}>
       <ScrollView>
-        <View
-          style={[styles.container, { backgroundColor: colors.background }]}
-        >
-          <View style={[styles.card, { backgroundColor: colors.primary }]}>
+        <View style={[styles.container, bgColor]}>
+          <View style={[styles.card, primaryColor]}>
             <Image
               style={styles.image}
               source={require("@/assets/images/Photo.png")}
             />
-            <Text
-              style={[
-                styles.Boldtext,
-                { color: colors.text, fontFamily: fontFamily.bold },
-              ]}
-            >
+            <Text style={[styles.Boldtext, baseTextStyle]}>
               Ahmet Hakan Demir
             </Text>
           </View>
           <Spacer flex={2} />
 
           <Pressable
-            onPress={() =>
-              router.push(
-                "https://docs.google.com/document/d/1ZKeHLH1XcS_kLFjsHAbqszWEeG7JD39OpQYDPyO1his/edit?tab=t.0"
-              )
-            }
-            onHoverIn={() => setIsHovered(true)}
-            onHoverOut={() => setIsHovered(false)}
-            style={[
-              styles.ButtonContainer,
-              {
-                backgroundColor: isHovered ? colors.primary : colors.primary,
-                transform: isHovered ? [{ scale: 1.03 }] : [{ scale: 1 }],
-                transitionDuration: "200ms",
-                cursor: "pointer",
-              },
-            ]}
+            accessibilityRole="button"
+            onPress={handlePressCv}
+            onHoverIn={hoverIn}
+            onHoverOut={hoverOut}
+            style={CvButtonStyle}
           >
-            <Text
-              style={[
-                styles.text,
-                {
-                  color: isHovered ? colors.textOposide : colors.text,
-                  fontFamily: fontFamily.bold,
-                },
-              ]}
-            >
-              CV
-            </Text>
+            <Text style={buttonTextStyle}>CV</Text>
           </Pressable>
 
           <View style={styles.textContainer}>
-            <Text
-              style={[
-                styles.paragraph,
-                { color: colors.text, fontFamily: fontFamily.medium },
-              ]}
-            >
+            <Text style={[styles.paragraph, baseTextStyle]}>
               ◉ Building real, working software is where I focus not just
               following tutorials.{"\n\n"}◉ Over the past few months, most of my
               time has gone into projects using TypeScript and Swift, especially
@@ -138,15 +146,11 @@ export default function Home() {
           <View style={styles.buttonFlex}>
             <PlatformOnlyButton
               label="Download For Android"
-              onPress={() => Linking.openURL("/downloads/app.apk")}
+              onPress={handleAndroidDownload}
             />
             <PlatformOnlyButton
               label="Download For iOS"
-              onPress={() =>
-                Linking.openURL(
-                  "https://expo.dev/artifacts/eas/goswPVyPxpXfWmQx7FaUvq.aab"
-                )
-              }
+              onPress={handleIosDownload}
             />
           </View>
           <Spacer flex={2} />
@@ -173,7 +177,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 10,
   },
-  buttonFlex:{
+  buttonFlex: {
     justifyContent: "center",
     alignItems: "center",
     width: "90%",
@@ -194,10 +198,6 @@ const styles = StyleSheet.create({
   textContainer: {
     width: "90%",
     paddingBottom: 20,
-  },
-  text: {
-    fontSize: 15,
-    fontStyle: "italic",
   },
   ButtonContainer: {
     height: 30,
