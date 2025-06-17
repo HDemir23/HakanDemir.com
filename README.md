@@ -13,7 +13,7 @@ A cross‑platform, mobile‑first CV built with Expo. Designed to run on Androi
 ## 🛠️ Tech Stack
 - **Expo SDK**: 49  
 - **Frameworks**: React Native, Expo Router, TypeScript  
-- **Platforms**: Web (Vercel), Android (APK), iOS (hopefeully soo )  
+- **Platforms**: Web (Vercel), Android (APK), iOS (hopefeully soon )  
 - **Backend/Hosting**: https://github.com/HDemir23/MyCv-Backend
 
 ---
