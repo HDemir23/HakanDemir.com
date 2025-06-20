@@ -5,7 +5,7 @@ A cross‑platform, mobile‑first CV built with Expo. Designed to run on Androi
 ---
 
 ## 🌐 Live Demo
-- Web: [your‑expo‑url.vercel.app](https://hakandemir.vercel.app/)  
+- Web: [Web](https://www.hakandemir.com.tr/)  
 ---
 
 ## 🛠️ Tech Stack
