@@ -1,6 +1,6 @@
-// Final FIXED Skills component with responsive layout
-import { Card } from "@/components/card";
-import { useThemeColors } from "@/constants/theme";
+
+import { Card } from "@/components/Card/card";
+import { useThemeColors } from "@/constants/ThemeProvider";
 import React, { useState } from "react";
 import {
   ScrollView,

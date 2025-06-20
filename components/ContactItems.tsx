@@ -3,7 +3,7 @@ import LinkedInIcon from "@/assets/svg/LinkedIn";
 import MailIcon from "@/assets/svg/Mail";
 import PhoneIcon from "@/assets/svg/Phone";
 import { fontFamily } from "@/constants/fonts";
-import { useThemeColors } from "@/constants/theme";
+import { useThemeColors } from "@/constants/ThemeProvider";
 import React, { useCallback, useMemo } from "react";
 import {
   Linking,

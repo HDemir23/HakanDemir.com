@@ -1,27 +1,30 @@
-import { useThemeColors } from "@/constants/theme";
+import { fontFamily } from "@/constants/fonts";
+import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import React from "react";
-import { useFonts } from "expo-font";
-import { fontFamily } from "@/constants/fonts";
+import { ThemeProvider } from "@/constants/ThemeProvider";
 
 export default function RootLayout() {
-  const colors = useThemeColors();
   const [fonts] = useFonts({
     [fontFamily.bold]: require("../assets/fonts/WorkSans-Bold.ttf"),
     [fontFamily.medium]: require("../assets/fonts/WorkSans-Medium.ttf"),
     [fontFamily.regular]: require("../assets/fonts/WorkSans-Regular.ttf"),
   });
 
+  if (!fonts) return null
+
   return (
-    <Stack>
-      <Stack.Screen
-        name="index"
-        options={{ title: "Welcome", headerShown: false }}
-      />
-      <Stack.Screen
-        name="(tabs)"
-        options={{ title: "Home", headerShown: false }}
-      />
-    </Stack>
+    <ThemeProvider>
+      <Stack>
+        <Stack.Screen
+          name="index"
+          options={{ title: "Welcome", headerShown: false }}
+        />
+        <Stack.Screen
+          name="(tabs)"
+          options={{ title: "Home", headerShown: false }}
+        />
+      </Stack>
+    </ThemeProvider>
   );
 }

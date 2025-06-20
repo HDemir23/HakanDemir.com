@@ -1,7 +1,7 @@
 import { PlatformOnlyButton } from "@/components/ActionButton";
 import Spacer from "@/components/Spacer";
 import { fontFamily } from "@/constants/fonts";
-import { useThemeColors } from "@/constants/theme";
+import { useThemeColors } from "@/constants/ThemeProvider";
 import { router } from "expo-router";
 import React, { useCallback, useMemo } from "react";
 import {
@@ -21,7 +21,7 @@ export default function Home() {
   const colors = useThemeColors();
   const [isHovered, setIsHovered] = React.useState(false);
 
-  // Callback functions for handling button presses
+
   const handlePressCv = useCallback(() => {
     router.push(
       "https://docs.google.com/document/d/1ZKeHLH1XcS_kLFjsHAbqszWEeG7JD39OpQYDPyO1his/edit?tab=t.0"

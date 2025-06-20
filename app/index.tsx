@@ -1,5 +1,5 @@
 import { fontFamily } from "@/constants/fonts";
-import { useThemeColors } from "@/constants/theme";
+import { useThemeColors } from "@/constants/ThemeProvider";
 import { useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -10,8 +10,8 @@ import {
   LayoutChangeEvent,
   Pressable,
   StyleSheet,
+  Text,
   View,
-  Text
 } from "react-native";
 
 const emojiList = [
@@ -203,19 +203,20 @@ export default function Index() {
             source={require("../assets/images/dock.png")}
             style={[styles.shape, { backgroundColor: colors.background }]}
           />
-          
         </Animated.View>
       </Pressable>
       <Text
-      style={
-        {
+        style={{
           color: colors.text,
           fontSize: 24,
           fontFamily: fontFamily.bold,
           textAlign: "center",
           marginTop: 20,
-        }
-      }> Click Me</Text>
+        }}
+      >
+        {" "}
+        Click Me
+      </Text>
     </View>
   );
 }

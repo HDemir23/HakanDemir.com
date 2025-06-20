@@ -1,12 +1,11 @@
 import ContactItems from "@/components/ContactItems";
 import Mail from "@/components/mail";
 import Spacer from "@/components/Spacer";
-import { useThemeColors } from "@/constants/theme";
+import { useThemeColors } from "@/constants/ThemeProvider";
 import React, { useMemo } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
   StyleProp,
   StyleSheet,
   useWindowDimensions,
@@ -19,32 +18,32 @@ export default function About() {
   const { width } = useWindowDimensions();
   const isTabletOrWeb = width >= 768;
 
-const contentStyle = useMemo<StyleProp<ViewStyle>>(
-  () => [
-    styles.container,
-    {
-      alignItems: isTabletOrWeb ? "center" : "flex-start",
-      paddingHorizontal: isTabletOrWeb ? 64 : 24,
-    },
-  ],
-  [isTabletOrWeb]
-);
+  const contentStyle = useMemo<StyleProp<ViewStyle>>(
+    () => [
+      styles.container,
+      {
+        alignItems: isTabletOrWeb ? "center" : "flex-start",
+        paddingHorizontal: isTabletOrWeb ? 64 : 24,
+      },
+    ],
+    [isTabletOrWeb]
+  );
 
   const centeredBoxStyle = useMemo<StyleProp<ViewStyle>>(
-  () => [
-    styles.centeredBox,
-    {
-      width: isTabletOrWeb ? "auto" : "100%",
-      alignSelf: "center",
-    },
-  ],
-  [isTabletOrWeb]
-);
+    () => [
+      styles.centeredBox,
+      {
+        width: isTabletOrWeb ? "auto" : "100%",
+        alignSelf: "center",
+      },
+    ],
+    [isTabletOrWeb]
+  );
 
-const bgStyle = useMemo<StyleProp<ViewStyle>>(
-  () => ({ backgroundColor: colors.background }),
-  [colors.background]
-);
+  const bgStyle = useMemo<StyleProp<ViewStyle>>(
+    () => ({ backgroundColor: colors.background }),
+    [colors.background]
+  );
 
   return (
     <KeyboardAvoidingView
@@ -52,21 +51,17 @@ const bgStyle = useMemo<StyleProp<ViewStyle>>(
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
     >
- 
-        <Spacer flex={1} />
-        <View
-          style={centeredBoxStyle}
-        >
-          <ContactItems />
-          <View style={styles.linkGroup}>
-            <Spacer />
-            <View style={styles.mailContainer}>
-              <Mail />
-            </View>
+      <Spacer flex={1} />
+      <View style={centeredBoxStyle}>
+        <ContactItems />
+        <View style={styles.linkGroup}>
+          <Spacer />
+          <View style={styles.mailContainer}>
+            <Mail />
           </View>
         </View>
-        <Spacer flex={2} />
-
+      </View>
+      <Spacer flex={2} />
     </KeyboardAvoidingView>
   );
 }

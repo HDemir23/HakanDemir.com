@@ -1,4 +1,4 @@
-import { useThemeColors } from "@/constants/theme";
+import { useThemeColors } from "@/constants/ThemeProvider";
 import React, { useState } from "react";
 import {
   Button,
@@ -33,11 +33,14 @@ export default function Mail() {
 
     try {
       setLoading(true);
-      const response = await fetch("https://my-cv-backend-rho.vercel.app/api/send-mail", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: senderMail, message }),
-      });
+      const response = await fetch(
+        "https://my-cv-backend-rho.vercel.app/api/send-mail",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: senderMail, message }),
+        }
+      );
 
       const result = await response.json();
 

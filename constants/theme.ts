@@ -1,7 +1,7 @@
 
 import { useColorScheme } from "react-native";
 
-const lightTheme = {
+export const lightTheme = {
   background: "#eceff1",      // sky fog
   foreground: "#263238",      // iron blue
   primary: "#90a4ae",         // muted steel
@@ -10,7 +10,7 @@ const lightTheme = {
   textOposide: "#eceff1",
 };
 
-const darkTheme = {
+export const darkTheme = {
   background: "#1c262b",      // gunmetal
   foreground: "#eceff1",      // chrome
   primary: "#78909c",         // rain silver

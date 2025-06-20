@@ -1,6 +1,6 @@
 import React from "react";
 import { Platform, Pressable, Text, StyleSheet } from "react-native";
-import { useThemeColors } from "@/constants/theme";
+import { useThemeColors } from "@/constants/ThemeProvider";
 import { fontFamily } from "@/constants/fonts";
 
 type Props = {
