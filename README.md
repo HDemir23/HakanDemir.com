@@ -5,13 +5,15 @@ A cross‑platform, mobile‑first CV built with Expo. Designed to run on Androi
 ---
 
 ## 🌐 Live Demo
-- Web: [your‑expo‑url.vercel.app](https://hakandemir.vercel.app/)  
+- Web: [Web](https://www.hakandemir.com.tr)
+- Android: [APK](https://expo.dev/artifacts/eas/t27g6ZaRyz35e161yyS5bs.apk)
+- IOS: [IPA - In Progress ]()
 ---
 
 ## 🛠️ Tech Stack
 - **Expo SDK**: 49  
 - **Frameworks**: React Native, Expo Router, TypeScript  
-- **Platforms**: Web (Vercel), Android (APK), iOS (hopefeully soo )  
+- **Platforms**: Web (Vercel), Android (APK), iOS (hopefeully soon )  
 - **Backend/Hosting**: https://github.com/HDemir23/MyCv-Backend
 
 ---
@@ -21,5 +23,7 @@ A cross‑platform, mobile‑first CV built with Expo. Designed to run on Androi
 git clone https://github.com/HDemir23/HakanDemir.com.git
 cd HakanDemir.com
 npm install
-npm run web      # launch web version
-npm start        # launch mobile dev server (Expo Go)
+npx expo start
+w     # for web
+i     # for IOS
+a     # for Android
